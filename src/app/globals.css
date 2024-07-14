@@ -61,6 +61,11 @@ html {
   .text-32 {
     @apply text-[32px] leading-normal;
   }
+  .hamburger-icon {
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+  }
+
+  
 }
 
 /* ===== custom classes ===== */
@@ -100,8 +105,8 @@ html {
 }
 .glassmorphism-auth {
   background: rgba(6, 3, 3, 0.711);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
 }
 .glassmorphism-black {
   background: rgba(18, 18, 18, 0.64);
@@ -144,4 +149,4 @@ html {
 }
 .cl-internal-wkkub3 {
   color: #f97535;
-}
+} 
