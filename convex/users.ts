@@ -1,4 +1,4 @@
-import { ConvexError, v } from "convex/values";
+import { ConvexError, convexToJson, v } from "convex/values";
 import { internalMutation, query } from "./_generated/server";
 
 export const createUser = internalMutation({
@@ -9,6 +9,13 @@ export const createUser = internalMutation({
         imageUrl:v.string()
     },
     handler : async (ctx, args)=>{
+        //check if user already exist
+        const user = await ctx.db
+                            .query("users")
+                            .filter((q)=>q.eq(q.field("email"),args.email) && q.eq(q.field("clerkId"),args.clerkId))
+                            .unique();
+        if(user)
+            return ;
         await ctx.db.insert("users",{
             email:args.email,
             name:args.name,
