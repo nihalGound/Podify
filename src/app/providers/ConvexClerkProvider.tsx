@@ -18,7 +18,7 @@ const ConvexClerkProvider = ({children} : {children:ReactNode}) => (
         colorPrimary:'',
         colorInputBackground:'#1B1F29',
         colorInputText:"#ffffff"
-      }
+      },
     }}>
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
         {children}
