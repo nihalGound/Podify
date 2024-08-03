@@ -1,7 +1,5 @@
 import { v } from "convex/values";
 import { action } from "./_generated/server";
-import axios from "axios";
-import FormData from "form-data";
 
 export const generateAudio = action({
   args: { input: v.string(), voiceType: v.string() },
@@ -56,32 +54,5 @@ export const generateAudio = action({
 
 export const genrateThumbnail = action({
   args:{input:v.string()},
-  handler:async(_,args)=>{
-    const payload = {
-      prompt: args.input,
-      output_format: "png"
-    };
-    const form = new FormData();
-    form.append('prompt', payload.prompt);
-    form.append('output_format', payload.output_format);
-    const response = await axios.post(
-      `https://api.stability.ai/v2beta/stable-image/generate/ultra`,
-      form,
-      {
-        validateStatus: undefined,
-        responseType: "arraybuffer",
-        headers: { 
-          // ...form.getHeaders(),
-          Authorization: `Bearer sk-SIHtXhz8GskTXKOi3ZxL3eaNU5mx2WOnUt91flx7XIyPnL9L`, 
-          Accept: "image/*" 
-        },
-      }
-    );
-    console.log(response.data)
-    if(response.status === 200) {
-      return  response.data
-    } else {
-      throw new Error(`${response.status}: ${response.data.toString()}`);
-    }
-  }
+  handler:async(_,args)=>{}
 });
