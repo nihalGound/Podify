@@ -30,6 +30,7 @@ import { cn } from "@/lib/utils"
 import { useState } from "react"
 import GeneratePodcast from "@/components/GeneratePodcast"
 import GenerateThumbnail from "@/components/GenerateThumbnail"
+import { Id } from "../../../../convex/_generated/dataModel"
 
 const formSchema = z.object({
   podcastTitle: z.string().max(100, {
@@ -54,9 +55,19 @@ const CreatePodcast = () => {
     // will work later
   }
 
-  const voiceCategories = ['alloy','echo','fable','nova','onyx','shimmer'];
+  const voiceCategories = ['Neural2','WaveNet','Basic'];
 
-  const [voice,setVoice] = useState<string|null>();
+  
+  const [audioUrl,setAudioUrl] = useState('');
+  const [audioStorageId,setAudioStorageId] = useState<Id<"_storage"> | null>(null);
+  const [audioDuration,setAudioDuration] = useState(0);
+
+  const [imageUrl,setImageUrl] = useState('');
+  const [imageStorageId,setImageStorageId] = useState<Id<"_storage"> | null>(null);
+  const [imagePrompt,setImagePrompt] = useState('');
+  
+  const [voiceType,setVoiceType] = useState<string|null>(null);
+  const [voicePrompt,setVoicePrompt] = useState('');
 
   return (
     <section className="flex flex-col mt-10">
@@ -81,7 +92,7 @@ const CreatePodcast = () => {
 
             <div className="flex flex-col gap-y-2">
               <Label className="font-bold text-white-1 text-lg">Voice Type</Label>
-              <Select onValueChange={(value)=>setVoice(value)}>
+              <Select onValueChange={(value)=>setVoiceType(value)}>
                 <SelectTrigger className={cn("w-full text-16 border-none bg-black-1 text-white-1 focus-visible:ring-offset-orange-1")}>
                   <SelectValue placeholder="Select category" className="placeholder:text-gray-1" />
                 </SelectTrigger>
@@ -92,9 +103,9 @@ const CreatePodcast = () => {
                     ))
                   }
                 </SelectContent>
-                {voice && (
+                {voiceType && (
                   <audio
-                    src={`/${voice}.mp3`}
+                    src={`/${voiceType}.mp3`}
                     autoPlay
                     className="hidden"
                   />
@@ -119,9 +130,23 @@ const CreatePodcast = () => {
           </div>
 
           <div className="py-10">
-            <GeneratePodcast />
+            <GeneratePodcast
+            voicePrompt={voicePrompt}
+            setVoicePrompt={setVoicePrompt}
+            voiceType={voiceType!}
+            setAudio={setAudioUrl}
+            audio={audioUrl}
+            setAudioStorageId={setAudioStorageId}
+            setAudioDuration={setAudioDuration}
+            />
 
-            <GenerateThumbnail />
+            <GenerateThumbnail
+            setImage = {setImageUrl}
+            setImageStorageId = {setImageStorageId}
+            setImagePrompt={setImagePrompt}
+            image={imageUrl}
+            imagePrompt={imagePrompt}
+            />
           </div>
           
           <Button type="submit" className="bg-orange-1 text-white-1 font-bold">Submit & publish podcast</Button>

@@ -14,7 +14,10 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as file from "../file.js";
 import type * as http from "../http.js";
+import type * as mediageneration from "../mediageneration.js";
+import type * as podcast from "../podcast.js";
 import type * as tasks from "../tasks.js";
 import type * as users from "../users.js";
 
@@ -27,7 +30,10 @@ import type * as users from "../users.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  file: typeof file;
   http: typeof http;
+  mediageneration: typeof mediageneration;
+  podcast: typeof podcast;
   tasks: typeof tasks;
   users: typeof users;
 }>;
