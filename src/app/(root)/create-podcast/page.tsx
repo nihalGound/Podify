@@ -31,6 +31,10 @@ import { useState } from "react"
 import GeneratePodcast from "@/components/GeneratePodcast"
 import GenerateThumbnail from "@/components/GenerateThumbnail"
 import { Id } from "../../../../convex/_generated/dataModel"
+import { useRouter } from "next/navigation"
+import { useToast } from "@/components/ui/use-toast"
+import { useMutation } from "convex/react"
+import { api } from "../../../../convex/_generated/api"
 
 const formSchema = z.object({
   podcastTitle: z.string().max(100, {
@@ -42,6 +46,11 @@ const formSchema = z.object({
 });
 
 const CreatePodcast = () => {
+  const [isSubmiting,setIsSubmiting] = useState(false)
+  const router = useRouter();
+  const {toast} = useToast();
+
+  const createPodcast = useMutation(api.podcast.createPodcast);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,8 +60,35 @@ const CreatePodcast = () => {
   });
 
   const submitHandler = async (form: z.infer<typeof formSchema>) => {
-    const { podcastTitle, podcastDescription } = form;
-    // will work later
+    try {
+      setIsSubmiting(true);
+      if(!audioUrl || !imageUrl || !voiceType){
+        toast({title:"Please Generate audio and image",})
+        setIsSubmiting(false)
+        throw new Error("Please generate audio and image");
+      }
+
+      const podcast = await createPodcast({
+        audioStorageId : audioStorageId!,
+        audioUrl :audioUrl,
+        imageStorageId : imageStorageId!,
+        imageUrl : imageUrl,
+        podcastTitle : form.podcastTitle,
+        podcastDescription : form.podcastDescription,
+        voicePrompt : voicePrompt,
+        imagePrompt : imagePrompt,
+        voiceType : voiceType,
+        audioDuration : audioDuration,
+        views : 0,
+      });
+      toast({title:"Podcast created !!"})
+      setIsSubmiting(false);
+      router.push('/')
+    } catch (error) {
+      console.log(error);
+      toast({title:"Error",variant:"destructive"})
+      setIsSubmiting(false);
+    }
   }
 
   const voiceCategories = ['Neural2','WaveNet','Basic'];
