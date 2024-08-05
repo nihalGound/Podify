@@ -57,7 +57,7 @@ const generateThumbnail = async () => {
     }
     try {
         const imageData = await getPodcastThumbnailUrl({ input: imagePrompt });
-        const imageBuffer = Buffer.from(imageData,'base64');
+        const imageBuffer = Buffer.from(imageData!,'base64');
         const blob = new Blob([imageBuffer!], { type: 'image/png' });
         const fileName = `thumbnail-${uuid()}`;
         handleImage(blob, fileName);
@@ -105,6 +105,7 @@ const uploadImage = async (e:React.ChangeEvent<HTMLInputElement>)=>{
                             type="file"
                             className="hidden"
                             ref={imgRef}
+                            accept="image/*"
                             onChange={uploadImage}
                         />
                         {!isGenerating ? (

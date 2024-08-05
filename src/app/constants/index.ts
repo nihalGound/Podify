@@ -18,6 +18,11 @@ export const sideBarLinks = [
         label:"My Profile",
         imageUrl:"/icons/profile.svg",
         route:"/profile"
+    },
+    {
+      label:"Upload Podcast",
+      imageUrl : "/icons/microphone.svg",
+      route:"/upload-podcast"
     }
 ];
 
